@@ -457,12 +457,14 @@
             <div class="glass-card p-8">
                 <h2 class="text-3xl font-bold gradient-text mb-8 text-center">🤖 AI-Powered Career Tools</h2>
                 <div class="grid md:grid-cols-3 gap-6">
-                    <div class="glass-card p-6 card-hover cursor-pointer group" onclick="openAITool('resume')">
-                        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">📄</div>
-                        <h3 class="font-bold text-gray-900 mb-3 text-lg">AI Resume Builder</h3>
-                        <p class="text-gray-700 font-medium">Create ATS-optimized resumes tailored to your target role</p>
-                        <div class="mt-4 text-purple-500 font-semibold">Try Now →</div>
-                    </div>
+                    
+    <div class="glass-card p-6 card-hover cursor-pointer group" onclick="openResumeBuilder()">
+        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">📄</div>
+        <h3 class="font-bold text-gray-900 mb-3 text-lg">AI Resume Builder</h3>
+        <p class="text-gray-700 font-medium">Attractive, AI-powered resume builder (opens in modal)</p>
+        <div class="mt-4 text-purple-500 font-semibold">Try Now →</div>
+    </div>
+    
                     <div class="glass-card p-6 card-hover cursor-pointer group" onclick="openAITool('interview')">
                         <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🎤</div>
                         <h3 class="font-bold text-gray-900 mb-3 text-lg">Interview Prep AI</h3>
@@ -554,6 +556,17 @@
                     Cancel
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Resume Builder Modal -->
+    <div id="resumeModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+        <div class="glass-card relative w-[90vw] h-[90vh] p-4 overflow-hidden">
+            <button onclick="closeResumeBuilder()" class="absolute top-4 right-6 text-2xl font-bold text-gray-600 hover:text-gray-900">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
+                📄 AI Resume Builder
+            </h3>
+            <iframe src="https://resumelm.com" title="AI Resume Builder" class="w-full h-full rounded-lg"></iframe>
         </div>
     </div>
 
@@ -1001,5 +1014,29 @@
         // Initialize the app
         init();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971257a8f58b4466',t:'MTc1NTUyOTg3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971257a8f58b4466',t:'MTc1NTUyOTg3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><div id="resumeModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+        <div class="glass-card relative w-[90vw] h-[90vh] p-4 overflow-hidden">
+            <button onclick="closeResumeBuilder()" class="absolute top-4 right-6 text-2xl font-bold text-gray-600 hover:text-gray-900">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
+                📄 AI Resume Builder
+            </h3>
+            <iframe src="https://resumelm.com" title="AI Resume Builder" class="w-full h-full rounded-lg"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // ...existing script code...
+
+        function openResumeBuilder() {
+            document.getElementById('resumeModal').classList.remove('hidden');
+        }
+
+        function closeResumeBuilder() {
+            document.getElementById('resumeModal').classList.add('hidden');
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
 </html>
