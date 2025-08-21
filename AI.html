@@ -316,9 +316,14 @@
                 <div class="text-7xl mb-6 pulse-animation">🎯</div>
                 <h2 class="text-3xl font-bold mb-6 text-gray-900">Welcome to Your Career Journey</h2>
                 <p class="text-gray-800 mb-8 text-lg leading-relaxed font-medium">Our AI-powered advisor helps you discover career paths that match your interests and skills, while providing responsible, unbiased guidance for your professional growth.</p>
-                <button onclick="startAssessment()" class="neon-button text-lg px-10 py-4">
-                    Start Career Assessment
-                </button>
+                <div class="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex sm:justify-center">
+                    <button onclick="startAssessment()" class="neon-button text-lg px-10 py-4">
+                        Start Career Assessment
+                    </button>
+                    <button onclick="showAITools()" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-10 py-4 rounded-full font-semibold transition-all transform hover:scale-105">
+                        Explore AI Tools
+                    </button>
+                </div>
                 <div class="mt-8 flex justify-center space-x-8 text-sm text-gray-700 font-medium">
                     <div class="flex items-center">
                         <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
@@ -456,27 +461,41 @@
         <div id="aiToolsSection" class="hidden mb-8">
             <div class="glass-card p-8">
                 <h2 class="text-3xl font-bold gradient-text mb-8 text-center">🤖 AI-Powered Career Tools</h2>
-                <div class="grid md:grid-cols-3 gap-6">
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     
-    <div class="glass-card p-6 card-hover cursor-pointer group" onclick="openResumeBuilder()">
-        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">📄</div>
-        <h3 class="font-bold text-gray-900 mb-3 text-lg">AI Resume Builder</h3>
-        <p class="text-gray-700 font-medium">Attractive, AI-powered resume builder (opens in modal)</p>
-        <div class="mt-4 text-purple-500 font-semibold">Try Now →</div>
-    </div>
-    
+                    <div class="glass-card p-6 card-hover cursor-pointer group" onclick="openResumeBuilder()">
+                        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">📄</div>
+                        <h3 class="font-bold text-gray-900 mb-3 text-lg">AI Resume Builder</h3>
+                        <p class="text-gray-700 font-medium">Create professional, ATS-optimized resumes</p>
+                        <div class="mt-4 text-purple-500 font-semibold">Try Now →</div>
+                    </div>
+                    
                     <div class="glass-card p-6 card-hover cursor-pointer group" onclick="openAITool('interview')">
                         <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🎤</div>
                         <h3 class="font-bold text-gray-900 mb-3 text-lg">Interview Prep AI</h3>
                         <p class="text-gray-700 font-medium">Practice with AI-generated interview questions</p>
                         <div class="mt-4 text-amber-500 font-semibold">Try Now →</div>
                     </div>
-                    <div class="glass-card p-6 card-hover cursor-pointer group" onclick="openAITool('salary')">
+                    
+                    <div class="glass-card p-6 card-hover cursor-pointer group" onclick="openSalaryNegotiator()">
                         <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">💰</div>
                         <h3 class="font-bold text-gray-900 mb-3 text-lg">Salary Negotiator</h3>
                         <p class="text-gray-700 font-medium">Get AI insights on salary ranges and negotiation tips</p>
                         <div class="mt-4 text-cyan-500 font-semibold">Try Now →</div>
                     </div>
+
+                    <div class="glass-card p-6 card-hover cursor-pointer group" onclick="openRoadmap()">
+                        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🗺️</div>
+                        <h3 class="font-bold text-gray-900 mb-3 text-lg">Career Roadmap</h3>
+                        <p class="text-gray-700 font-medium">Generate personalized career and skill roadmaps</p>
+                        <div class="mt-4 text-green-500 font-semibold">Explore →</div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button onclick="startAssessment()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-full font-semibold transition-all transform hover:scale-105">
+                        🎯 Take Full Career Assessment
+                    </button>
                 </div>
             </div>
         </div>
@@ -502,6 +521,9 @@
             <div class="mt-8 text-center space-x-4">
                 <button onclick="saveResults()" class="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white px-6 py-2 rounded-lg font-medium transition-all transform hover:scale-105 shadow-lg">
                     💾 Save Results
+                </button>
+                <button onclick="showAITools()" class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-2 rounded-lg font-medium transition-all transform hover:scale-105 shadow-lg">
+                    🤖 Try AI Tools
                 </button>
                 <button onclick="startOver()" class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-2 rounded-lg font-medium transition-all transform hover:scale-105 shadow-lg">
                     🔄 Start Over
@@ -567,6 +589,28 @@
                 📄 AI Resume Builder
             </h3>
             <iframe src="https://resumelm.com" title="AI Resume Builder" class="w-full h-full rounded-lg"></iframe>
+        </div>
+    </div>
+
+    <!-- Salary Negotiator Modal -->
+    <div id="salaryModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+        <div class="glass-card relative w-[90vw] h-[90vh] p-4 overflow-hidden">
+            <button onclick="closeSalaryNegotiator()" class="absolute top-4 right-6 text-2xl font-bold text-gray-600 hover:text-gray-900">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 bg-gradient-to-r from-green-600 to-teal-500 bg-clip-text text-transparent">
+                💰 Salary Negotiator AI
+            </h3>
+            <iframe src="indexx.html" title="Salary Negotiator" class="w-full h-full rounded-lg"></iframe>
+        </div>
+    </div>
+
+    <!-- Career Roadmap Modal -->
+    <div id="roadmapModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+        <div class="glass-card relative w-[90vw] h-[90vh] p-4 overflow-hidden">
+            <button onclick="closeRoadmap()" class="absolute top-4 right-6 text-2xl font-bold text-gray-600 hover:text-gray-900">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-500 bg-clip-text text-transparent">
+                🗺️ Career Roadmap Generator
+            </h3>
+            <iframe src="ai_career_roadmap.html" title="Career Roadmap" class="w-full h-full rounded-lg"></iframe>
         </div>
     </div>
 
@@ -664,12 +708,43 @@
             document.getElementById('assessmentForm').classList.add('fade-in');
         }
 
+        function showAITools() {
+            hideAllScreens();
+            document.getElementById('aiToolsSection').classList.remove('hidden');
+            document.getElementById('aiToolsSection').classList.add('fade-in');
+        }
+
         function hideAllScreens() {
             const screens = ['welcomeScreen', 'assessmentForm', 'loadingScreen', 'resultsScreen', 'savedResults', 'aiToolsSection'];
             screens.forEach(screen => {
                 document.getElementById(screen).classList.add('hidden');
                 document.getElementById(screen).classList.remove('fade-in');
             });
+        }
+
+        // Modal Functions
+        function openResumeBuilder() {
+            document.getElementById('resumeModal').classList.remove('hidden');
+        }
+
+        function closeResumeBuilder() {
+            document.getElementById('resumeModal').classList.add('hidden');
+        }
+
+        function openSalaryNegotiator() {
+            document.getElementById('salaryModal').classList.remove('hidden');
+        }
+
+        function closeSalaryNegotiator() {
+            document.getElementById('salaryModal').classList.add('hidden');
+        }
+
+        function openRoadmap() {
+            document.getElementById('roadmapModal').classList.remove('hidden');
+        }
+
+        function closeRoadmap() {
+            document.getElementById('roadmapModal').classList.add('hidden');
         }
 
         // AI Tools Functions
@@ -679,25 +754,6 @@
             const content = document.getElementById('aiToolContent');
             
             const tools = {
-                resume: {
-                    title: '📄 AI Resume Builder',
-                    content: `
-                        <div class="space-y-4">
-                            <p class="text-gray-700 font-medium">Create a professional, ATS-optimized resume tailored to your career goals.</p>
-                            <div class="bg-gray-50 p-4 rounded-lg">
-                                <h4 class="font-semibold mb-2 text-gray-900">Resume Template Generator</h4>
-                                <input type="text" placeholder="Target Job Title" class="w-full p-3 border rounded mb-3 text-gray-900">
-                                <textarea placeholder="Key achievements and experiences..." class="w-full p-3 border rounded h-20 mb-3 text-gray-900"></textarea>
-                                <button class="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-4 py-2 rounded hover:from-pink-600 hover:to-purple-700 font-medium">
-                                    Generate Resume
-                                </button>
-                            </div>
-                            <div class="bg-blue-50 p-3 rounded">
-                                <p class="text-sm text-blue-800 font-medium">💡 AI will optimize keywords and format for applicant tracking systems</p>
-                            </div>
-                        </div>
-                    `
-                },
                 interview: {
                     title: '🎤 Interview Prep AI',
                     content: `
@@ -717,26 +773,6 @@
                             </div>
                             <div class="bg-green-50 p-3 rounded">
                                 <p class="text-sm text-green-800 font-medium">🎯 Get personalized feedback on your answers and body language tips</p>
-                            </div>
-                        </div>
-                    `
-                },
-                salary: {
-                    title: '💰 Salary Negotiator AI',
-                    content: `
-                        <div class="space-y-4">
-                            <p class="text-gray-700 font-medium">Get AI-powered insights on salary ranges and negotiation strategies.</p>
-                            <div class="bg-gray-50 p-4 rounded-lg">
-                                <h4 class="font-semibold mb-2 text-gray-900">Salary Analysis</h4>
-                                <input type="text" placeholder="Job Title" class="w-full p-3 border rounded mb-3 text-gray-900">
-                                <input type="text" placeholder="Location" class="w-full p-3 border rounded mb-3 text-gray-900">
-                                <input type="number" placeholder="Years of Experience" class="w-full p-3 border rounded mb-3 text-gray-900">
-                                <button class="bg-gradient-to-r from-green-500 to-teal-600 text-white px-4 py-2 rounded hover:from-green-600 hover:to-teal-700 font-medium">
-                                    Get Salary Insights
-                                </button>
-                            </div>
-                            <div class="bg-yellow-50 p-3 rounded">
-                                <p class="text-sm text-yellow-800 font-medium">📊 AI analyzes market data to suggest competitive salary ranges</p>
                             </div>
                         </div>
                     `
@@ -819,10 +855,6 @@
 
         function displayResults(recommendations) {
             hideAllScreens();
-            
-            // Show AI tools section
-            document.getElementById('aiToolsSection').classList.remove('hidden');
-            document.getElementById('aiToolsSection').classList.add('fade-in');
             
             const container = document.getElementById('careerRecommendations');
             container.innerHTML = '';
@@ -1009,30 +1041,6 @@
             currentAssessment = null;
             document.getElementById('careerForm').reset();
             showWelcomeScreen();
-        }
-
-        // Initialize the app
-        init();
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'971257a8f58b4466',t:'MTc1NTUyOTg3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><div id="resumeModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-        <div class="glass-card relative w-[90vw] h-[90vh] p-4 overflow-hidden">
-            <button onclick="closeResumeBuilder()" class="absolute top-4 right-6 text-2xl font-bold text-gray-600 hover:text-gray-900">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
-                📄 AI Resume Builder
-            </h3>
-            <iframe src="https://resumelm.com" title="AI Resume Builder" class="w-full h-full rounded-lg"></iframe>
-        </div>
-    </div>
-
-    <script>
-        // ...existing script code...
-
-        function openResumeBuilder() {
-            document.getElementById('resumeModal').classList.remove('hidden');
-        }
-
-        function closeResumeBuilder() {
-            document.getElementById('resumeModal').classList.add('hidden');
         }
 
         // Initialize the app
