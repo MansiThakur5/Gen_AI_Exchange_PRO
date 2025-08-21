@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Career & Skill Advisor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; overflow-x: hidden; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); }
+        .neon-button { background: linear-gradient(45deg, #8b5cf6, #f59e0b, #06b6d4); border: none; border-radius: 50px; padding: 8px 16px; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 14px; }
+        .progress-bar { background: linear-gradient(90deg, #8b5cf6, #f59e0b, #06b6d4); border-radius: 10px; height: 12px; }
+    </style>
+</head>
+<body>
+    <header class="gradient-bg text-white py-8 relative">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-bold text-center">🚀 AI Career & Skill Advisor</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div id="resultsScreen">
+            <div id="careerRecommendations" class="grid gap-6 mb-8"></div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h3 class="text-xl font-semibold mb-4 text-gray-900">📚 Your Personalized Learning Path</h3>
+                <div id="learningPath" class="space-y-4"></div>
+            </div>
+
+            <!-- Career Roadmap Section -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">🗺️ Career Roadmap</h3>
+                    <div class="flex space-x-2">
+                        <select id="careerSelect" class="border rounded-lg px-3 py-2">
+                            <option value="Software Developer">Software Developer</option>
+                            <option value="Data Scientist">Data Scientist</option>
+                            <option value="AI Engineer">AI Engineer</option>
+                            <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+                            <option value="Cloud Engineer">Cloud Engineer</option>
+                            <option value="Blockchain Developer">Blockchain Developer</option>
+                            <option value="DevOps Engineer">DevOps Engineer</option>
+                        </select>
+                        <button onclick="applyCareer()" class="neon-button">Apply</button>
+                        <button onclick="showRoadmap('6')" class="neon-button">6 Months</button>
+                        <button onclick="showRoadmap('12')" class="neon-button">1 Year</button>
+                    </div>
+                </div>
+                <div id="careerDescription" class="mb-6 text-gray-700"></div>
+                <div id="careerRoadmap" class="space-y-4"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const careerDescriptions = {
+            "Software Developer": "Software Developers design and build applications and systems that run on computers or devices. They are in high demand across industries.",
+            "Data Scientist": "Data Scientists analyze and interpret complex data to help companies make better decisions, often using machine learning and AI.",
+            "AI Engineer": "AI Engineers develop intelligent algorithms and systems, working with machine learning, deep learning, and NLP to build smart applications.",
+            "Cybersecurity Analyst": "Cybersecurity Analysts protect systems, networks, and data from cyber threats and attacks, ensuring digital safety.",
+            "Cloud Engineer": "Cloud Engineers design, implement, and manage cloud-based infrastructure and services for scalable applications.",
+            "Blockchain Developer": "Blockchain Developers create decentralized applications and smart contracts, working on emerging technologies like crypto and DeFi.",
+            "DevOps Engineer": "DevOps Engineers bridge development and operations, focusing on automation, CI/CD pipelines, and efficient deployment workflows."
+        };
+
+        const roadmapTemplates = {
+            "Software Developer": [
+                "Learn HTML, CSS basics",
+                "Master JavaScript fundamentals",
+                "Build small web projects",
+                "Learn React or Angular",
+                "Understand backend (Node.js/Python)",
+                "Work with databases (SQL/NoSQL)",
+                "Build a full-stack project",
+                "Practice data structures & algorithms",
+                "Contribute to open source",
+                "Build portfolio website",
+                "Prepare for coding interviews",
+                "Apply for internships/jobs"
+            ],
+            "Data Scientist": [
+                "Learn Python for data analysis",
+                "Master Pandas & NumPy",
+                "Data visualization with Matplotlib/Seaborn",
+                "Learn statistics & probability",
+                "Intro to machine learning",
+                "Work on small datasets",
+                "Deep dive into ML models",
+                "Kaggle competitions",
+                "Data cleaning & preprocessing",
+                "Learn SQL for data queries",
+                "Build end-to-end ML project",
+                "Prepare portfolio & apply for roles"
+            ],
+            "AI Engineer": [
+                "Master Python & ML basics",
+                "Learn TensorFlow/PyTorch",
+                "Work on computer vision projects",
+                "Build NLP models",
+                "Understand MLOps tools",
+                "Deploy AI models to cloud",
+                "Experiment with reinforcement learning",
+                "Optimize deep learning models",
+                "Contribute to AI open source",
+                "Build advanced AI project",
+                "Research papers & case studies",
+                "Apply for AI roles"
+            ],
+            "Cybersecurity Analyst": [
+                "Learn basics of networks & security",
+                "Understand firewalls & VPNs",
+                "Practice penetration testing",
+                "Learn ethical hacking tools",
+                "Study malware analysis",
+                "Master incident response",
+                "Work on security labs",
+                "Get Security+ or CEH cert",
+                "Simulate real attack/defense",
+                "Develop secure coding skills",
+                "Build portfolio with case studies",
+                "Apply for security jobs"
+            ],
+            "Cloud Engineer": [
+                "Learn AWS/Azure basics",
+                "Understand virtualization & containers",
+                "Work with Kubernetes/Docker",
+                "Build cloud-hosted apps",
+                "Learn serverless computing",
+                "Understand cloud security",
+                "Automate infra with Terraform",
+                "Work on hybrid cloud projects",
+                "Get AWS/GCP/Azure certification",
+                "Deploy scalable app",
+                "Optimize cloud costs",
+                "Apply for cloud engineer roles"
+            ],
+            "Blockchain Developer": [
+                "Learn basics of blockchain",
+                "Understand Bitcoin/Ethereum",
+                "Master Solidity & smart contracts",
+                "Build simple DApps",
+                "Learn about NFTs",
+                "Work with DeFi protocols",
+                "Explore Hyperledger",
+                "Test blockchain security",
+                "Contribute to blockchain projects",
+                "Build advanced DApp",
+                "Deploy contracts to testnet",
+                "Apply for blockchain jobs"
+            ],
+            "DevOps Engineer": [
+                "Learn Linux & shell scripting",
+                "Understand CI/CD pipelines",
+                "Work with Docker & Kubernetes",
+                "Learn configuration management (Ansible/Puppet)",
+                "Automate builds & deployments",
+                "Monitor with Prometheus/Grafana",
+                "Understand cloud services",
+                "Work on infra as code",
+                "Practice with Jenkins/GitLab CI",
+                "Build complete CI/CD pipeline",
+                "Optimize DevOps workflows",
+                "Apply for DevOps roles"
+            ]
+        };
+
+        function applyCareer() {
+            const selectedCareer = document.getElementById('careerSelect').value;
+            document.getElementById('careerDescription').innerHTML = `<p class='text-gray-700'><strong>${selectedCareer}:</strong> ${careerDescriptions[selectedCareer]}</p>`;
+            document.getElementById('careerRoadmap').innerHTML = "<p class='text-gray-700'>Please select duration (6 months or 1 year) to generate roadmap for chosen field.</p>";
+        }
+
+        function showRoadmap(duration) {
+            const container = document.getElementById('careerRoadmap');
+            container.innerHTML = "";
+            const selectedCareer = document.getElementById('careerSelect').value;
+            const steps = roadmapTemplates[selectedCareer] || [];
+
+            let maxSteps = duration === '6' ? 6 : 12;
+            steps.slice(0, maxSteps).forEach((step, index) => {
+                const percent = Math.round(((index + 1) / maxSteps) * 100);
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <div class="mb-2 font-medium text-gray-800">Month ${index + 1}: ${step}</div>
+                    <div class="w-full bg-gray-200 rounded-full h-3 mb-4">
+                        <div class="progress-bar" style="width: ${percent}%"></div>
+                    </div>`;
+                container.appendChild(div);
+            });
+        }
+
+        // Initialize empty roadmap until career applied
+        document.addEventListener('DOMContentLoaded', () => applyCareer());
+    </script>
+</body>
+</html>
