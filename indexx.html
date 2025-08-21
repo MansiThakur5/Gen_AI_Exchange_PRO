@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Salary Negotiator AI</title>
+  <style>
+    body {
+      margin: 0; 
+      height: 100vh; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      background: linear-gradient(120deg, #6b46c1, #2b6cb0);
+      font-family: "Segoe UI", sans-serif;
+    }
+    .modal {
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      width: 380px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      padding: 25px;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      background: linear-gradient(90deg,#7f00ff,#e100ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 15px;
+    }
+    h3 {
+      font-size: 16px;
+      margin: 10px 0;
+      color: #333;
+    }
+    input, select {
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.2s;
+    }
+    input:focus, select:focus {
+      border-color: #6b46c1;
+      box-shadow: 0 0 6px rgba(107,70,193,0.4);
+    }
+    button.primary {
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: bold;
+      background: #16a34a;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button.primary:hover {
+      background: #15803d;
+    }
+    button.smallBtn {
+      margin: 6px 0;
+      padding: 8px 10px;
+      font-size: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      background: white;
+    }
+    .result {
+      margin-top: 15px;
+      padding: 12px;
+      background: #f7faf9;
+      border-radius: 10px;
+      font-size: 14px;
+      border: 1px solid #e2e8f0;
+    }
+    .hidden { display: none; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="modal">
+    <div class="logo">💜 Salary Negotiator AI</div>
+    <p class="subtitle">Get AI-powered insights on salary ranges and negotiation strategies.</p>
+
+    <h3>Salary Analysis</h3>
+    <input list="jobList" id="jobTitle" placeholder="Job Title" />
+    <datalist id="jobList">
+      <option value="Software Engineer">
+      <option value="Web Developer">
+      <option value="Data Scientist">
+      <option value="Product Manager">
+      <option value="UI/UX Designer">
+      <option value="System Administrator">
+    </datalist>
+
+    <input id="location" placeholder="Location" />
+    <button id="detectBtn" class="smallBtn">📍 Use my location</button>
+
+    <select id="experience">
+      <option value="">Years of Experience</option>
+      <option value="0">0</option><option value="1">1</option><option value="3">3</option>
+      <option value="5">5</option><option value="10">10</option><option value="15">15</option>
+    </select>
+
+    <button id="getBtn" class="primary">Get Salary Insights</button>
+    <div id="result" class="result hidden"></div>
+  </div>
+
+  <script>
+    const jobInput = document.getElementById("jobTitle");
+    const locationInput = document.getElementById("location");
+    const expSelect = document.getElementById("experience");
+    const getBtn = document.getElementById("getBtn");
+    const detectBtn = document.getElementById("detectBtn");
+    const resultDiv = document.getElementById("result");
+
+    // 📍 Detect current location
+    detectBtn.addEventListener("click", async () => {
+      if (!navigator.geolocation) {
+        alert("Geolocation not supported");
+        return;
+      }
+      detectBtn.textContent = "Detecting...";
+      navigator.geolocation.getCurrentPosition(async pos => {
+        const { latitude, longitude } = pos.coords;
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`);
+          const data = await res.json();
+          const place = data.address.city || data.address.town || data.address.village || data.address.state || data.address.country;
+          locationInput.value = place || `${latitude.toFixed(2)},${longitude.toFixed(2)}`;
+        } catch (e) {
+          locationInput.value = `${latitude.toFixed(2)},${longitude.toFixed(2)}`;
+        }
+        detectBtn.textContent = "📍 Use my location";
+      }, () => {
+        alert("Could not detect location");
+        detectBtn.textContent = "📍 Use my location";
+      });
+    });
+
+    // 📝 Salary calculation logic
+    getBtn.addEventListener("click", () => {
+      const jobTitle = jobInput.value.trim();
+      const location = locationInput.value.trim();
+      const experience = expSelect.value;
+      if (!jobTitle || !location || !experience) {
+        alert("Please fill all fields"); return;
+      }
+
+      let base = 40000;
+      if (experience >= 3) base += 20000;
+      if (experience >= 5) base += 40000;
+      if (experience >= 10) base += 80000;
+
+      const min = base.toLocaleString();
+      const max = (base * 1.5).toLocaleString();
+
+      resultDiv.classList.remove("hidden");
+      resultDiv.innerHTML = `<strong>Insights:</strong><br>
+        For a ${jobTitle} in ${location} with ${experience} years:<br>
+        💰 Estimated Salary: ₹${min} – ₹${max}<br>
+        📌 Tip: Be confident, but flexible in negotiation.`;
+    });
+  </script>
+</body>
+</html>
